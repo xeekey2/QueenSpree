@@ -13,6 +13,9 @@ injectionDelay := 32000 ; 32 seconds
 scriptRunning := false
 autoInjectionStarted := false
 
+; Conversion factor from centimeters to pixels (approximately)
+cmToPx := 38
+
 ; Hotkey to start/stop the script
 F11::
 scriptRunning := !scriptRunning
@@ -26,46 +29,39 @@ return
 ; Injection routine
 InjectQueens:
 if WinActive(gameTitle) {
-    ; Move mouse to position x900 y500
-    MouseMove, 900, 500
-    Sleep, 100 ; Short delay to ensure the mouse move is registered
-
-    ; Select all Queens
-    Send, {6}
-    Sleep, 100 ; Short delay to ensure command is registered
-
-    ; Issue the inject command sequence
-    Send, {F1}{Click}
-    Sleep, 100
-    Send, {F3}{Click}
-    Sleep, 100
-    Send, {F4}{Click}
-    Sleep, 100
-    Send, {F5}{Click}
-    Sleep, 100
+    MouseGetPos, startX, startY
+    MouseMove, 1280, 540
+    Send,{tab}{4}{v}{Backspace}
+    sleep -1
+    ControlSend, , {v}, StarCraft II,
+    Send , {Click}{Backspace}
+    ControlSend, , {v}, StarCraft II,
+    Send , {Click}{Backspace}
+    ControlSend, , {v}, StarCraft II,
+    Send , {Click}{Backspace}
+    ControlSend, , {v}, StarCraft II,
+    Send , {Click}{Backspace}
+    ControlSend, , {v}, StarCraft II,
+    Send , {Click}{Backspace}
+    ControlSend, , {v}, StarCraft II,
+    Send , {Click}{Backspace}
+    ControlSend, , {v}, StarCraft II,
+    Send , {Click}{Backspace}
+    MouseMove, startX, startY
 }
 return
 
 ; Single injection routine for manual Alt keypress
 SingleInjectQueens:
 if WinActive(gameTitle) {
-    ; Move mouse to position x900 y500
-    MouseMove, 900, 500
-    Sleep, 100 ; Short delay to ensure the mouse move is registered
-
-    ; Select all Queens
-    Send, {6}
-    Sleep, 100 ; Short delay to ensure command is registered
-
-    ; Issue the inject command sequence
-    Send, {F1}{Click}
-    Sleep, 100
-    Send, {F3}{Click}
-    Sleep, 100
-    Send, {F4}{Click}
-    Sleep, 100
-    Send, {F5}{Click}
-    Sleep, 100
+    MouseGetPos, startX, startY
+    Send,{6}{v}{Backspace}
+    Click, 1280, 540
+    ControlSend, , {v}{Click, 1280, 540}{Backspace}, StarCraft II,
+    ControlSend, , {v}{Click, 1280, 540}{Backspace}, StarCraft II,
+    ControlSend, , {v}{Click, 1280, 540}{Backspace}, StarCraft II,
+    ControlSend, , {v}{Click, 1280, 540}{Backspace}, StarCraft II,
+    MouseMove, startX, startY
 }
 return
 
@@ -81,6 +77,10 @@ if (scriptRunning) {
         SetTimer, InjectQueens, %injectionDelay%
     }
 }
+return
+
+CapsLock::
+    ControlSend, , {5}{s}{d}, StarCraft II,
 return
 
 ; Function to check if window is active
